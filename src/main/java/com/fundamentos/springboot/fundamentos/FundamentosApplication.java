@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -45,14 +46,35 @@ public class FundamentosApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	// throws Exception
+	public void run(String... args) {
 //		ejemplosAnteriones();
 		saveUserInDataBase();
+		getInformationJpqlFromUser();
+	}
+
+	private void getInformationJpqlFromUser() {
+		LOGGER.info("Get User By Email: " + userRepository.findByUserEmail("juan@me.com").orElseThrow(() -> new RuntimeException("No se encotro usuario")));
+
+		// ascending
+		userRepository.findAndSort("al", Sort.by("id").descending())
+				.stream()
+				.forEach(user -> LOGGER.info("Usuario sort: " + user));
 	}
 
 	private void saveUserInDataBase() {
 		User user1 = new User("Alex", "alex@me.com", LocalDate.of(2021, 06, 05));
 		User user2 = new User("Juan", "juan@me.com", LocalDate.of(2022, 06, 05));
+		User user4 = new User("Oscar", "oscar@domain.com", LocalDate.now());
+		User user5 = new User("Test1", "Test1@domain.com", LocalDate.now());
+		User user6 = new User("Test2", "Test2@domain.com", LocalDate.now());
+		User user7 = new User("Test3", "Test3@domain.com", LocalDate.now());
+		User user8 = new User("Test4", "Test4@domain.com", LocalDate.now());
+		User user9 = new User("Test5", "Test5@domain.com", LocalDate.now());
+		User user10 = new User("Test6", "Test6@domain.com", LocalDate.now());
+		User user11 = new User("Test7", "Test7@domain.com", LocalDate.now());
+		User user12 = new User("Test8", "Test8@domain.com", LocalDate.now());
+		User user13 = new User("Test9", "Test9@domain.com", LocalDate.now());
 
 		List<User> list = Arrays.asList(user1, user2);
 //		se registra en base de dats
